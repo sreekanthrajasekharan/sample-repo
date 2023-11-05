@@ -1,21 +1,65 @@
 /* groovylint-disable CompileStatic */
 pipeline {
     agent any
+        stage("Clone Git Repository") {
+            steps {
+                git(
+                    url: "https://github.com/sreekanthrajasekharan/sample-repo.git",
+                    branch: "main",
+                    changelog: true,
+                    poll: true
+                )
+                sh 'git config --global user.name "Jenkins Automation"'
+                sh 'git config --global user.email "jenkins@localhost"'
+            }
+        }
+
     stages {
         stage('CompileTypescript') {
             steps {
+                sh 'npm install typescript'
+                sh 'pwd'
                 sh 'tsc'
             }
         }
-        stage('BuildApp') {
+        stage('Load NPM Packages') {
             steps {
                 sh 'npm install'
             }
         }
-        stage('Deploy') {
+        stage('Compile App') {
             steps {
-                sh 'node .'
+                sh 'npm run compile'
             }
+        }
+        stage('Execute App') {
+            steps {
+                sh 'npm start'
+            }
+        }
+
+        stage('commit changes') {
+            steps {
+                sh 'pwd'
+                sh 'ls -a'
+                sh "git commit -m 'Executed a sample node application'"
+            }
+        }
+        stage("Push to Git Repository") {
+            steps {
+                withCredentials([gitUsernamePassword(credentialsId: 'sreekanth-github-token', gitToolName: 'Default')]) {
+                    sh "git push -u origin main"
+                }
+            }
+        }
+
+    }
+        post {
+        always {
+            deleteDir()
         }
     }
 }
+
+
+
