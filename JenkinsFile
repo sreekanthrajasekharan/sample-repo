@@ -46,7 +46,7 @@ pipeline {
         stage("PushtoGitRepository") {
             steps {
                 withCredentials([gitUsernamePassword(credentialsId: 'sreekanth-github-token', gitToolName: 'Default')]) {
-                    sh "git push -u"
+                    sh "git push -u origin jenkins-pipeline"
                 }
             }
         }
