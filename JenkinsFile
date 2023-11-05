@@ -39,6 +39,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls -a'
+                sh 'git add .'
                 sh "git commit -m 'Executed a sample node application'"
             }
         }
