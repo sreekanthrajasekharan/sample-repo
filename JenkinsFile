@@ -15,6 +15,18 @@ pipeline {
         }
 
     stages {
+        stage('Clone Git Repository') {
+            steps {
+                git(
+                    url: 'https://github.com/sreekanthrajasekharan/sample-repo.git',
+                    branch: 'main',
+                    changelog: true,
+                    poll: true
+                )
+                sh 'git config --global user.name "Jenkins Automation"'
+                sh 'git config --global user.email "jenkins@localhost"'
+            }
+        }
         stage('CompileTypescript') {
             steps {
                 sh 'npm install typescript'
@@ -45,6 +57,26 @@ pipeline {
                 sh "git commit -m 'Executed a sample node application'"
             }
         }
+        stage('Push to Git Repository') {
+            steps {
+                withCredentials([gitUsernamePassword(credentialsId: 'sreekanth-github-token', gitToolName: 'Default')]) {
+                    sh 'git push -u origin main'
+                }
+            }
+        }
+        stage('Execute App') {
+            steps {
+                sh 'npm start'
+            }
+        }
+
+        stage('commit changes') {
+            steps {
+                sh 'pwd'
+                sh 'ls -a'
+                sh "git commit -m 'Executed a sample node application'"
+            }
+        }
         stage("Push to Git Repository") {
             steps {
                 withCredentials([gitUsernamePassword(credentialsId: 'sreekanth-github-token', gitToolName: 'Default')]) {
@@ -55,6 +87,11 @@ pipeline {
 
     }
         post {
+        always {
+            deleteDir()
+        }
+    }
+    post {
         always {
             deleteDir()
         }
