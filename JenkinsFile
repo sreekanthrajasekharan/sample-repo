@@ -14,11 +14,6 @@ pipeline {
                 sh 'git config --global user.email "jenkins@localhost"'
             }
         }
-        stage('CompileTypescript') {
-            steps {
-                sh 'tsc'
-            }
-        }
         stage('LoadNPMPackages') {
             steps {
                 sh 'npm install'
@@ -34,7 +29,6 @@ pipeline {
                 sh 'npm start'
             }
         }
-
         stage('commitChanges') {
             steps {
                 sh 'pwd'
@@ -51,7 +45,7 @@ pipeline {
             }
         }
     }
-        post {
+    post {
         always {
             deleteDir()
         }
