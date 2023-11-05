@@ -13,4 +13,4 @@ class SampleApplication {
   }
 }
 
-const sampleObj = new SampleApplication('Hello Jenkins from git');
+const sampleObj = new SampleApplication('Hello Jenkins from jenkins branch');
