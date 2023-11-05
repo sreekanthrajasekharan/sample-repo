@@ -6,7 +6,7 @@ pipeline {
             steps {
                 git(
                     url: "https://github.com/sreekanthrajasekharan/sample-repo.git",
-                    branch: "main",
+                    branch: "jenkins-pipeline",
                     changelog: true,
                     poll: true
                 )
@@ -16,38 +16,36 @@ pipeline {
         }
         stage('CompileTypescript') {
             steps {
-                sh 'npm install typescript'
-                sh 'pwd'
                 sh 'tsc'
             }
         }
-        stage('Load NPM Packages') {
+        stage('LoadNPMPackages') {
             steps {
                 sh 'npm install'
             }
         }
-        stage('Compile App') {
+        stage('CompileApp') {
             steps {
                 sh 'npm run compile'
             }
         }
-        stage('Execute App') {
+        stage('ExecuteApp') {
             steps {
                 sh 'npm start'
             }
         }
 
-        stage('commit changes') {
+        stage('commitChanges') {
             steps {
                 sh 'pwd'
                 sh 'ls -a'
                 sh "git commit -m 'Executed a sample node application'"
             }
         }
-        stage("Push to Git Repository") {
+        stage("PushtoGitRepository") {
             steps {
                 withCredentials([gitUsernamePassword(credentialsId: 'sreekanth-github-token', gitToolName: 'Default')]) {
-                    sh "git push -u origin main"
+                    sh "git push -u"
                 }
             }
         }
@@ -58,6 +56,3 @@ pipeline {
         }
     }
 }
-
-
-
