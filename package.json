@@ -7,6 +7,9 @@
     "compile": "tsc",
     "start": "node dist/index.js"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "sreekanth.r.r",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.2.2"
+  }
 }

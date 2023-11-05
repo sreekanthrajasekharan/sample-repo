@@ -40,7 +40,7 @@ pipeline {
                 sh 'pwd'
                 sh 'ls -a'
                 sh 'git add .'
-                sh "git commit -m 'Executed a sample node application'"
+                sh "git commit -m 'Generate build from jenkins pipeline'"
             }
         }
         stage("PushtoGitRepository") {
